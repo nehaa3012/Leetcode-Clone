@@ -2,6 +2,8 @@ import React from 'react'
 import { getProblemById } from '@/app/action/serverActions'
 import ProblemWorkspace from '@/components/ProblemWorkspace'
 
+export const dynamic = "force-dynamic";
+
 const ProblemPage = async ({ params }) => {
     const { id } = await params
     const problem = await getProblemById(id)

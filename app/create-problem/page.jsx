@@ -2,6 +2,8 @@ import { syncUser } from '@/lib/syncUser';
 import React from 'react'
 import CreateProblemForm from './create-problem-form';
 
+export const dynamic = "force-dynamic";
+
 const CreateProblemPage = async () => {
 
   const user = await syncUser();

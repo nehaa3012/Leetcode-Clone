@@ -3,6 +3,8 @@ import React from 'react'
 import { getAllProblemsForListing } from '@/app/action/serverActions'
 import ProblemTable from '@/components/ProblemTable'
 
+export const dynamic = "force-dynamic";
+
 const ProblemsPage = async () => {
   const { problems, userRole } = await getAllProblemsForListing();
 
