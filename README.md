@@ -1,206 +1,342 @@
-# BitMaster
+# 🚀 LeetCode Clone
 
-BitMaster is a modern Next.js application scaffolded with create-next-app. Replace the sections below with project-specific details as you implement features. This README includes setup, development, testing, deployment, and contribution guidance to help collaborators get started quickly.
+A modern, full-stack coding platform built with Next.js that allows users to solve algorithmic problems in multiple programming languages. Features AI-powered problem generation, real-time code execution via Judge0, and comprehensive test case validation.
 
-## Table of contents
+## ✨ Features
 
-- [About](#about)
-- [Features](#features)
-- [Tech stack](#tech-stack)
-- [Getting started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Local development](#local-development)
-  - [Available scripts](#available-scripts)
-- [Environment variables](#environment-variables)
-- [Project structure](#project-structure)
-- [Testing](#testing)
-- [Linting & formatting](#linting--formatting)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgements](#acknowledgements)
+- **Multi-Language Support**: Write and execute code in JavaScript, Python, and Java
+- **AI-Powered Problem Generation**: Generate coding problems using Google's Gemini AI
+- **Real-Time Code Execution**: Powered by Judge0 API for secure code execution
+- **Admin Dashboard**: Create, validate, and manage coding problems
+- **Automatic Test Validation**: Reference solutions are validated against test cases before publishing
+- **User Authentication**: Secure authentication with Clerk
+- **Problem Tracking**: Track solved problems and user progress
+- **Difficulty Levels**: Problems categorized as Easy, Medium, or Hard
+- **Rich Problem Features**: Examples, constraints, hints, and editorial solutions
 
-## About
+## 🛠️ Tech Stack
 
-BitMaster is a Next.js application (app router) intended to be the base for your project. Update this section to describe the purpose of BitMaster, e.g.:
+### Frontend
+- **Next.js 16** - React framework with App Router
+- **React** - UI library
+- **Tailwind CSS** - Styling
 
-- a Bitcoin & crypto portfolio tracker
-- a visual analytics dashboard for transaction data
-- a web frontend for a backend API
+### Backend
+- **Next.js API Routes** - Serverless API endpoints
+- **Prisma** - Database ORM
+- **PostgreSQL** - Database
+- **Judge0** - Code execution engine
 
-Replace the example features below with the actual capabilities of your app.
+### AI & Integrations
+- **Google Gemini AI** - Problem generation
+- **Clerk** - User authentication
 
-## Features
+## 📋 Prerequisites
 
-- Next.js 13+ (App Router)
-- React + Server Components
-- Fast refresh and optimized builds
-- TypeScript-ready (convert files or add tsconfig)
-- Example pages and components to get started
+Before you begin, ensure you have:
 
-(Optional — update with actual features)
-- Real-time price updates
-- Portfolio management
-- Interactive charts and historical data
-- Auth (OAuth / JWT)
-- REST/GraphQL API integration
+- Node.js 18+ installed
+- PostgreSQL database
+- Judge0 API access (RapidAPI or self-hosted)
+- Clerk account for authentication
+- Google AI (Gemini) API key
 
-## Tech stack
+## 🚀 Getting Started
 
-- Next.js
-- React
-- Node.js
-- Tailwind CSS (optional)
-- Charting library (e.g., Chart.js, Recharts) (optional)
-- Any backend or API (Express, Fastify, Supabase, Firebase, etc.)
+### 1. Clone the Repository
 
-## Getting started
+```bash
+git clone https://github.com/yourusername/leetcode-clone.git
+cd leetcode-clone
+```
 
-### Prerequisites
+### 2. Install Dependencies
 
-- Node.js 18.x or later (LTS recommended)
-- npm, yarn, or pnpm
-- (Optional) bun if you prefer
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
 
-### Local development
+### 3. Environment Variables
 
-1. Clone the repository
-   ```bash
-   git clone https://github.com/nehaa3012/BitMaster.git
-   cd BitMaster
-   ```
+Create a `.env` file in the root directory:
 
-2. Install dependencies
-   ```bash
-   npm install
-   # or
-   yarn
-   # or
-   pnpm install
-   ```
+```env
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/leetcode_clone"
 
-3. Create a `.env.local` file (see [Environment variables](#environment-variables) below).
+# Clerk Authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 
-4. Run the development server
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
-   # or
-   bun dev
-   ```
+# Judge0 API (via RapidAPI)
+RAPIDAPI_KEY=your_rapidapi_key
+RAPIDAPI_HOST=judge0-ce.p.rapidapi.com
 
-5. Open http://localhost:3000 in your browser.
+# Google Gemini AI
+GEMINI_API_KEY=your_gemini_api_key
 
-### Available scripts
+# App URL
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
 
-These come from the default Next.js template; update as needed.
+### 4. Database Setup
 
-- `dev` — Run Next.js in development mode
-- `build` — Create an optimized production build
-- `start` ��� Start the production server (after `build`)
-- `lint` — Run ESLint
-- `format` — Run Prettier (if configured)
-- `test` — Run tests (if configured)
+```bash
+# Generate Prisma Client
+npx prisma generate
 
-Example:
+# Run migrations
+npx prisma migrate dev
+
+# (Optional) Seed database
+npx prisma db seed
+```
+
+### 5. Run Development Server
+
 ```bash
 npm run dev
-npm run build
-npm run start
-```
-
-## Environment variables
-
-Create `.env.local` for secrets and keys. Example variables you might need:
-
-```
-NEXT_PUBLIC_API_URL=https://api.example.com
-NEXT_PUBLIC_MAPS_KEY=your_public_maps_key_here
-API_SECRET_KEY=your_secret_here
-```
-
-Never commit secrets into source control. For deployment, set environment variables in your hosting provider.
-
-## Project structure
-
-(Adjust to match your repository)
-```
-.
-├─ app/                # Next.js App Router pages and layout
-├─ components/         # Reusable React components
-├─ public/             # Static files (images, icons)
-├─ styles/             # Global styles (e.g., Tailwind, CSS modules)
-├─ scripts/            # Utility scripts for build/deploy
-├─ README.md
-└─ package.json
-```
-
-## Testing
-
-Add tests with your preferred framework (Jest, React Testing Library, Vitest, etc.). Example:
-
-```bash
-npm run test
 # or
-pnpm test
+yarn dev
+# or
+pnpm dev
 ```
 
-Include unit, integration, and E2E tests as appropriate.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Linting & formatting
+## 📁 Project Structure
 
-Set up ESLint and Prettier for consistent code style.
+```
+leetcode-clone/
+├── app/
+│   ├── api/
+│   │   ├── problems/
+│   │   │   └── create/
+│   │   │       └── route.js       # Problem creation API
+│   │   └── auth/
+│   ├── (routes)/
+│   │   ├── problems/
+│   │   ├── admin/
+│   │   └── profile/
+│   └── layout.js
+├── lib/
+│   ├── codeWrapper.js             # Code wrapper generation
+│   ├── judge0.js                  # Judge0 API integration
+│   ├── prisma.js                  # Prisma client
+│   └── syncUser.js                # User synchronization
+├── prisma/
+│   └── schema.prisma              # Database schema
+├── components/
+│   ├── ui/
+│   └── ...
+└── public/
+```
 
-Example:
+## 🎯 Key Features Explained
+
+### 1. Code Wrapper System
+
+The platform automatically wraps user code to handle:
+- Multi-parameter functions
+- Different input formats (single-line, multi-line, comma-separated)
+- Type parsing (arrays, numbers, strings)
+- Output formatting
+
+**Supported Input Formats:**
+
+```javascript
+// Single-line comma-separated
+[1, 2, 3, 4, 5], 3
+
+// Multi-line
+[1, 2, 3, 4, 5]
+3
+
+// With variable assignment
+arr = [1, 2, 3]
+```
+
+### 2. Problem Creation Workflow
+
+1. **Admin Access Required**: Only users with `ADMIN` role can create problems
+2. **AI Generation**: Use Gemini to generate problem descriptions and solutions
+3. **Automatic Validation**: Reference solutions are tested against all test cases
+4. **Multi-Language Support**: Provide solutions in JavaScript, Python, and Java
+5. **Publish**: Once validated, problems are saved to the database
+
+### 3. Test Case Validation
+
+Before a problem is created:
+- All reference solutions are executed against test cases
+- Output is normalized (whitespace removed)
+- Compilation and runtime errors are caught
+- Detailed error messages are provided
+
+## 🔧 API Routes
+
+### Create Problem
+```http
+POST /api/problems/create
+```
+
+**Request Body:**
+```json
+{
+  "title": "Two Sum",
+  "description": "Find two numbers that add up to target",
+  "difficulty": "EASY",
+  "tags": ["Array", "Hash Table"],
+  "examples": {
+    "javascript": {
+      "input": "[2, 7, 11, 15], 9",
+      "output": "[0, 1]"
+    }
+  },
+  "constraints": "2 <= nums.length <= 10^4",
+  "hints": "Try using a hash map",
+  "editorial": "Detailed solution explanation",
+  "testCases": [
+    {
+      "input": "[2, 7, 11, 15], 9",
+      "output": "[0, 1]"
+    }
+  ],
+  "codeSnippets": {
+    "javascript": "function twoSum(nums, target) {\n  // Your code here\n}",
+    "python": "def two_sum(nums, target):\n    # Your code here",
+    "java": "public int[] twoSum(int[] nums, int target) {\n    // Your code here\n}"
+  },
+  "referenceSolutions": {
+    "javascript": "function twoSum(nums, target) { ... }",
+    "python": "def two_sum(nums, target): ...",
+    "java": "public int[] twoSum(int[] nums, int target) { ... }"
+  },
+  "problemType": "NUMBER"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Problem created successfully",
+  "data": { /* problem object */ }
+}
+```
+
+## 🎨 Customization
+
+### Adding New Languages
+
+1. **Update `codeWrapper.js`**:
+   - Add language detection in `findFunctionName()`
+   - Add parameter counting in `countFunctionParams()`
+   - Add wrapper generation in `generateWrapper()`
+
+2. **Update `judge0.js`**:
+   - Add language ID mapping in `getJudge0LanguageId()`
+
+3. **Update UI**:
+   - Add language option in problem creation form
+   - Add syntax highlighting support
+
+### Custom Test Case Format
+
+Modify the wrapper functions in `codeWrapper.js` to handle your specific input/output format.
+
+## 🧪 Testing
+
 ```bash
-npm run lint
-npm run format
+# Run tests
+npm test
+
+# Run tests in watch mode
+npm test -- --watch
+
+# Run specific test file
+npm test -- codeWrapper.test.js
 ```
 
-## Deployment
+## 🚢 Deployment
 
-Recommended: Vercel (first-class support for Next.js).
+### Vercel (Recommended)
 
-- Connect your GitHub repository to Vercel
-- Set environment variables in Vercel dashboard
-- Deploy branch (e.g., main or production)
+1. Push your code to GitHub
+2. Import project in Vercel
+3. Add environment variables
+4. Deploy
 
-Other options: Netlify, Render, DigitalOcean App Platform, or self-hosted.
+### Docker
 
-## Contributing
+```bash
+# Build image
+docker build -t leetcode-clone .
 
-Contributions are welcome! Suggested workflow:
-
-1. Fork the repo
-2. Create a feature branch: `git checkout -b feat/your-feature`
-3. Commit changes with clear messages
-4. Push and open a Pull Request
-5. Ensure tests and linting pass
-
-Add a CONTRIBUTING.md if you want to document contribution guidelines and code of conduct.
-
-## License
-
-Specify a license for your project (e.g., MIT). Example:
-
-```
-MIT License
+# Run container
+docker run -p 3000:3000 leetcode-clone
 ```
 
-Replace with the chosen license and include a LICENSE file.
+## 🤝 Contributing
 
-## Acknowledgements
+Contributions are welcome! Please follow these steps:
 
-- Next.js — https://nextjs.org
-- Create Next App template
-- Any libraries, designers, or resources you used
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 Common Issues & Solutions
+
+### Judge0 API Errors
+- Verify your RapidAPI key is correct
+- Check if you've exceeded rate limits
+- Ensure network connectivity to Judge0 servers
+
+### Database Connection Issues
+- Verify PostgreSQL is running
+- Check DATABASE_URL format
+- Run `npx prisma migrate reset` if migrations are out of sync
+
+### Compilation Errors (Java)
+- Ensure no multiple public classes in generated code
+- Check that class names match expectations
+- Verify Java version compatibility with Judge0
+
+### Test Case Validation Failures
+- Check input/output format matches expected format
+- Verify whitespace handling in comparisons
+- Test reference solutions manually
+
+## 📚 Resources
+
+- [Judge0 Documentation](https://judge0.com/docs)
+- [Prisma Documentation](https://www.prisma.io/docs)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Clerk Documentation](https://clerk.com/docs)
+- [Google AI Documentation](https://ai.google.dev/docs)
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [LeetCode](https://leetcode.com) for inspiration
+- [Judge0](https://judge0.com) for code execution API
+- [Google](https://ai.google.dev) for Gemini AI
+- All contributors and supporters
+
+## 📧 Contact
+
+For questions or support, please open an issue or contact [your-email@example.com](mailto:your-email@example.com)
 
 ---
 
-If you'd like, I can:
-- Commit this README.md directly to the `main` branch,
-- Or open a pull request with the updated README,
-- Or modify the content to be specific to BitMaster's features (tell me the core features and tech choices and I'll update the About/Features sections).
+**Built with ❤️ using Next.js**
