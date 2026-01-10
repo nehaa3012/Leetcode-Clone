@@ -4,9 +4,47 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ThumbsUp, ThumbsDown, Star, MessageSquare } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, Star, MessageSquare, Sparkles, Loader2, Copy } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
+import { Editor } from "@monaco-editor/react";
 
 const ProblemDescription = ({ problem }) => {
+    const [aiSolution, setAiSolution] = React.useState(null);
+    const [isGenerating, setIsGenerating] = React.useState(false);
+
+    const handleGenerateSolutionWithAI = async () => {
+        setIsGenerating(true);
+        try {
+            const res = await fetch("/api/generate-solution", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    title: problem.title,
+                    description: problem.description,
+                    testCases: problem.testCases,
+                    language: 'JAVASCRIPT', // We can optionally detect or let user choose
+                }),
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error);
+
+            setAiSolution(data.solution);
+            toast.success("Solution generated!");
+        } catch (err) {
+            toast.error("Failed to generate solution: " + err.message);
+        } finally {
+            setIsGenerating(false);
+        }
+    };
+
+    const copyToClipboard = () => {
+        if (!aiSolution) return;
+        navigator.clipboard.writeText(aiSolution);
+        toast.success("Copied to clipboard!");
+    };
+
     const getDifficultyColor = (difficulty) => {
         switch (difficulty) {
             case 'EASY': return 'text-green-500 bg-green-500/10 hover:bg-green-500/20';
@@ -124,7 +162,63 @@ const ProblemDescription = ({ problem }) => {
                     </TabsContent>
 
                     <TabsContent value="solutions" className="p-4 m-0">
-                        <p className="text-muted-foreground">Solutions tab functionality coming soon.</p>
+                        <div className="space-y-6">
+                            <div className="flex items-center justify-between">
+                                <h3 className="text-lg font-semibold flex items-center gap-2">
+                                    <Sparkles className="h-5 w-5 text-amber-500" />
+                                    AI Suggested Solution
+                                </h3>
+                                <div className="flex gap-2">
+                                    {aiSolution && (
+                                        <Button variant="outline" size="sm" onClick={copyToClipboard} className="gap-2">
+                                            <Copy className="h-4 w-4" />
+                                            Copy
+                                        </Button>
+                                    )}
+                                    <Button
+                                        onClick={handleGenerateSolutionWithAI}
+                                        disabled={isGenerating}
+                                        size="sm"
+                                        className="gap-2 bg-amber-600 hover:bg-amber-700 text-white"
+                                    >
+                                        {isGenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+                                        {aiSolution ? "Regenerate" : "Generate with AI"}
+                                    </Button>
+                                </div>
+                            </div>
+
+                            {aiSolution ? (
+                                <div className="border rounded-md overflow-hidden bg-slate-950">
+                                    <Editor
+                                        height="400px"
+                                        language="javascript"
+                                        theme="vs-dark"
+                                        value={aiSolution}
+                                        options={{
+                                            readOnly: true,
+                                            minimap: { enabled: false },
+                                            fontSize: 14,
+                                            automaticLayout: true,
+                                            scrollBeyondLastLine: false,
+                                        }}
+                                    />
+                                </div>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center py-12 border-2 border-dashed rounded-lg bg-muted/20">
+                                    <Sparkles className="h-12 w-12 text-muted-foreground mb-4 opacity-20" />
+                                    <p className="text-muted-foreground text-center max-w-[250px]">
+                                        Need help? Click the button above to generate a solution using Gemini AI.
+                                    </p>
+                                </div>
+                            )}
+
+                            <Separator />
+
+                            <div className="space-y-2">
+                                <h4 className="font-semibold text-sm">Community Solutions</h4>
+                                <p className="text-sm text-muted-foreground">Community discussion and alternative solutions will appear here.</p>
+                            </div>
+                        </div>
                     </TabsContent>
 
                     <TabsContent value="submissions" className="p-4 m-0">

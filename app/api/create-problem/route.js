@@ -33,6 +33,21 @@ export async function POST(req) {
             problemType, // "NUMBER" | "STRING"
         } = body;
 
+        // SANITIZE TEST CASES: Remove all whitespaces from expected outputs
+        const sanitizedTestCases = (testCases || []).map(tc => ({
+            ...tc,
+            output: (tc.output || "").replace(/\s+/g, ""),
+            input: (tc.input || "").trim()
+        }));
+
+        // SANITIZE EXAMPLES: Remove whitespaces from outputs for visual consistency
+        const sanitizedExamples = { ...(examples || {}) };
+        Object.keys(sanitizedExamples).forEach(lang => {
+            if (sanitizedExamples[lang].output) {
+                sanitizedExamples[lang].output = sanitizedExamples[lang].output.replace(/\s+/g, "");
+            }
+        });
+
 
         /* ---------- BASIC VALIDATION ---------- */
 
@@ -41,9 +56,9 @@ export async function POST(req) {
             !description ||
             !difficulty ||
             !tags ||
-            !examples ||
+            !sanitizedExamples ||
             !constraints ||
-            !testCases ||
+            !sanitizedTestCases.length ||
             !codeSnippets ||
             !referenceSolutions
         ) {
@@ -80,7 +95,7 @@ export async function POST(req) {
 
             let finalCode = generateWrapper(normalizedLang, solutionCode, problemType);
 
-            const submissions = testCases.map(tc => ({
+            const submissions = sanitizedTestCases.map(tc => ({
                 source_code: finalCode,
                 language_id: languageId,
                 stdin: tc.input,
@@ -102,7 +117,7 @@ export async function POST(req) {
                         {
                             error: `Validation failed for ${language}`,
                             input: submissions[i].stdin,
-                            expected: submissions[i].expected_output,
+                            expected: sanitizedTestCases[i].output,
                             actual: (results[i].stdout || "").trim(),
                             details: results[i],
                         },
@@ -123,11 +138,11 @@ export async function POST(req) {
                 description,
                 difficulty,
                 tags,
-                examples,
+                examples: sanitizedExamples,
                 constraints,
                 hints,
                 editorial,
-                testCases,
+                testCases: sanitizedTestCases,
                 codeSnippets,
                 referenceSolutions,
                 userId: user.id,
