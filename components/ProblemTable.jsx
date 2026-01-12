@@ -48,7 +48,7 @@ const ProblemTable = ({ problems, userRole }) => {
     };
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 p-4">
             <div className="flex items-center justify-between">
                 <h2 className="text-xl font-semibold">Problems List</h2>
                 <div className="w-[180px]">
@@ -66,7 +66,7 @@ const ProblemTable = ({ problems, userRole }) => {
                 </div>
             </div>
 
-            <div className="rounded-md border">
+            <div className="rounded-md border border-gray-200">
                 <Table>
                     <TableHeader>
                         <TableRow>

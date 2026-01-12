@@ -12,8 +12,10 @@ import { Badge } from "@/components/ui/badge";
 import { executeCode } from "@/app/action/codeExecution"; // Import server action
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const ProblemEditor = ({ problem }) => {
+    const router = useRouter();
     const [language, setLanguage] = useState('JAVASCRIPT');
     const [code, setCode] = useState('');
     const [activeTab, setActiveTab] = useState('testcase');
@@ -93,8 +95,11 @@ const ProblemEditor = ({ problem }) => {
                 code,
                 language,
                 problemId: problem.id,
-                mode: 'SUBMIT'
+                mode: 'SUBMIT',
             });
+            if(result.success == true){
+                router.push('/problems')
+            }
 
             if (result.error) {
                 toast.error(result.error);
@@ -312,8 +317,9 @@ const ProblemEditor = ({ problem }) => {
                                     disabled={isRunning}
                                 >
                                     {isRunning ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-                                    Submit
+                                    Submit 
                                 </Button>
+                                
                             </div>
                         </div>
                     </Tabs>

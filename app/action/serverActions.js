@@ -94,3 +94,64 @@ export async function deleteProblem(id) {
     }
 }
 
+// Get user profile
+export async function getUserProfile() {
+    try {
+        const user = await syncUser();
+        const profile = await prisma.user.findUnique({
+            where: {
+                id: user.id
+            },
+            include: {
+                problems: true,
+                solvedBy: {
+                    include: {
+                        problem: true
+                    }
+                }
+            }
+        });
+        return profile;
+    } catch (error) {
+        console.error("Error fetching user profile:", error);
+        throw error;
+    }
+}
+
+// Get leaderboard data
+export async function getLeaderboardData() {
+    try {
+        const users = await prisma.user.findMany({
+            select: {
+                id: true,
+                username: true,
+                name: true,
+                clerkId: true,
+                _count: {
+                    select: {
+                        solvedBy: true
+                    }
+                }
+            },
+            orderBy: {
+                solvedBy: {
+                    _count: "desc",
+                },
+            }, 
+        });
+
+        // Format for easier use in frontend
+        return users.map((user, index) => ({
+            rank: index + 1,
+            id: user.id,
+            username: user.username,
+            name: user.name,
+            clerkId: user.clerkId,
+            solveCount: user._count.solvedBy
+        }));
+    } catch (error) {
+        console.error("Error fetching leaderboard data:", error);
+        throw error;
+    }
+} 
+

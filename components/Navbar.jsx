@@ -5,7 +5,7 @@ import { UserButton } from '@clerk/nextjs'
 import { ModeToggle } from './mode-toggle'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { PlusCircle, Database, Code2, Trophy, Search, Loader2 } from 'lucide-react'
+import { PlusCircle, Database, Code2, Trophy, Search, Loader2, User } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
 
 const Navbar = ({ role }) => {
@@ -74,11 +74,11 @@ const Navbar = ({ role }) => {
                             Problems
                         </Link>
                         <Link
-                            href="/contest"
+                            href="/leaderboard"
                             className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary flex items-center gap-1.5"
                         >
                             <Trophy className="h-4 w-4" />
-                            Contests
+                            Leaderboard
                         </Link>
                     </nav>
                 </div>
@@ -137,12 +137,15 @@ const Navbar = ({ role }) => {
                         )}
                     </div>
 
-                    {isAdmin && (
+                    {isAdmin ? (
                         <Link href="/create-problem"><Button variant="default" size="sm" className="hidden md:flex items-center gap-2 shadow-sm hover:shadow-md transition-all">
                             <PlusCircle className="h-4 w-4" />
                             Create Problem
                         </Button></Link>
-                    )}
+                    ) : <Link href="/profile"><Button variant="default" size="sm" className="hidden md:flex items-center gap-2 shadow-sm hover:shadow-md transition-all">
+                        <User className="h-4 w-4" />
+                        Profile
+                    </Button></Link>}
 
                     <div className="flex items-center gap-2 border-l pl-4 ml-2">
                         <ModeToggle />
