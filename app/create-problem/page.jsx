@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 const CreateProblemPage = async () => {
 
   const user = await syncUser();
-  // console.log("user from problem page", user)
+  
   if (user.role !== "ADMIN") {
     return (
       <div>Unauthorized</div>

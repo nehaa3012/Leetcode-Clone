@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 export default async function RootLayout({ children }) {
     const user = await syncUser();
     const role = user?.role || "USER";
-    console.log(user)
+    
     return (
         <div className="relative min-h-screen">
             {/* Modern Background Layer */}
