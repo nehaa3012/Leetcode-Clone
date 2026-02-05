@@ -20,7 +20,7 @@ import { Button } from '@/components/ui/button'
 const LeaderboardPage = async () => {
 
     const leaderboard = await getLeaderboardData();
-
+                                                                                               
 
     // Split into top 3 and others
     const top3 = leaderboard.slice(0, 3);
