@@ -49,7 +49,7 @@ const problemSchema = z.object({
     title: z.string().min(3),
     description: z.string().min(10),
     difficulty: z.enum(["EASY", "MEDIUM", "HARD"]),
-    problemType: z.enum(["NUMBER", "STRING", "LINKED_LIST", "BINARY_TREE"]), // 🔥 NOW SUPPORTS ALL TYPES
+    problemType: z.enum(["NUMBER", "STRING"]), // 🔥 REQUIRED
     tags: z.array(z.string()),
     constraints: z.string(),
     hints: z.string().optional(),
@@ -472,37 +472,6 @@ function CreateProblemForm() {
                                 {errors.difficulty && (
                                     <p className="text-sm text-red-500 mt-1">
                                         {errors.difficulty.message}
-                                    </p>
-                                )}
-                            </div>
-
-                            <div>
-                                <Label htmlFor="problemType" className="text-lg font-semibold">
-                                    Problem Type
-                                </Label>
-                                <Controller
-                                    name="problemType"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Select
-                                            onValueChange={field.onChange}
-                                            value={field.value}
-                                        >
-                                            <SelectTrigger className="mt-2">
-                                                <SelectValue placeholder="Select type" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="NUMBER">Number</SelectItem>
-                                                <SelectItem value="STRING">String</SelectItem>
-                                                <SelectItem value="LINKED_LIST">Linked List</SelectItem>
-                                                <SelectItem value="BINARY_TREE">Binary Tree</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    )}
-                                />
-                                {errors.problemType && (
-                                    <p className="text-sm text-red-500 mt-1">
-                                        {errors.problemType.message}
                                     </p>
                                 )}
                             </div>

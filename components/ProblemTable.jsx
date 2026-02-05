@@ -19,7 +19,6 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { CreatePlaylistModal } from "./CreatePlaylistModal"
 
 const ProblemTable = ({ problems, userRole }) => {
-    console.log("📝 ProblemTable received problems:", problems?.length, "Solved count:", problems?.filter(p => p.isSolved).length);
     const [filterDifficulty, setFilterDifficulty] = useState("ALL");
     const [selectedProblems, setSelectedProblems] = useState([]);
     const [isPlaylistModalOpen, setIsPlaylistModalOpen] = useState(false);

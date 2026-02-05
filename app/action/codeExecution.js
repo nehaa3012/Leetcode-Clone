@@ -4,8 +4,6 @@ import { prisma } from "@/lib/prisma";
 import { getJudge0LanguageId, submitBatch, pollBatchResults } from "@/lib/judge0";
 import { generateWrapper, detectProblemType } from "@/lib/codeWrapper";
 import { syncUser } from "@/lib/syncUser";
-import { redisHelpers } from "@/lib/redis";
-import { revalidatePath } from "next/cache";
 
 export async function executeCode({ code, language, problemId, mode = 'RUN', inputs = [] }) {
     try {
@@ -107,7 +105,6 @@ export async function executeCode({ code, language, problemId, mode = 'RUN', inp
             const allPassed = formattedResults.every(r => r.passed);
             if (allPassed) {
                 try {
-                    console.log(`👤 DEBUG: Current User ID (codeExecution): ${user.id}`);
                     // Check if already solved
                     const existing = await prisma.problemSolved.findFirst({
                         where: {
@@ -123,32 +120,7 @@ export async function executeCode({ code, language, problemId, mode = 'RUN', inp
                                 problemId: problemId
                             }
                         });
-                        console.log(`✅ SUCCESS: Problem ${problemId} marked as solved for user ${user.id}`);
-
-                        // Invalidate Redis caches to update UI immediately
-                        const listingPattern = `problems_listing:*:${user.id}`;
-                        const listingKeys = await redisHelpers.keys(listingPattern);
-
-                        console.log(`🔍 Found ${listingKeys.length} matching listing keys to invalidate`);
-
-                        if (listingKeys.length > 0) {
-                            await redisHelpers.del(...listingKeys);
-                            console.log(`🧹 Invalidated listing caches: ${listingKeys.join(', ')}`);
-                        }
-
-                        // Invalidate other relevant caches
-                        await redisHelpers.del(`user_profile:${user.id}`);
-                        await redisHelpers.del('leaderboard');
-
-                        console.log('✨ Redis cache invalidation complete');
-
-                        // Force Next.js to revalidate paths
-                        revalidatePath("/problems");
-                        revalidatePath("/profile");
-                        revalidatePath(`/problems/${problemId}`);
-                        console.log('🚀 Path revalidation triggered');
-                    } else {
-                        console.log(`ℹ️ Problem ${problemId} was already solved by user ${user.id}`);
+                        console.log(`Problem ${problemId} marked as solved for user ${user.id}`);
                     }
                 } catch (dbError) {
                     console.error("Failed to update solved status:", dbError);
